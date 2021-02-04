@@ -32,12 +32,12 @@ class Board:
         
         # the pieces_position.config object's got the initial position
         with open('datas/pieces_position.config', 'r') as f:
-            pieces_positions = eval(''.join(f.readlines()))
-            self.board = [case.Case(i, pieces_positions) for i in range(64)]
-            self.graveyard = {
-                'white': [],
-                'black': []
-            }
+            pieces_positions = eval(f.read())
+        self.board = [case.Case(i, pieces_positions) for i in range(64)]
+        self.graveyard = {
+            'white': [],
+            'black': []
+        }
     
     
     def pprint(self): 
