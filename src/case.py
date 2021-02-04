@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import rook, knight, bishop, queen, king, pawn
 
 class Case:
     ''' This class represents a square of the board.
@@ -31,9 +32,9 @@ class Case:
             the initial chess board position 
         ----------
         '''
-        
         # Attribute assignement
         self.x = num % 8
         self.y = num // 8
         self.color = 'black' if self.x % 2 == self.y % 2 else 'white'
-        self.piece = pieces_positions.get((self.x, self.y))
+        piece_name = pieces_positions.get((self.x, self.y))
+        self.piece = eval(f'{piece_name[0].lower()}.{piece_name[0]}("{piece_name[1]}")') if piece_name else None

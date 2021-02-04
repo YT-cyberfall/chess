@@ -43,16 +43,22 @@ class Board:
     def pprint(self): 
         '''This method print the board in the console''' 
         
-        # TODO remplacer par Piece
-        print('   ' + '_' * 8 * 3)
-        for i in range(0, 64, 8):
-            print((i // 8) + 1, end='  ')
-            print('|', end='')
-            print(*[x.piece for x in self.board[i:i+8]], sep='|', end='')
-            print('|')
-            print('   ' + '_' * 8 * 3)
-        print( '   ', end=' ')
-        print(*[chr(x) for x in range(65, 73)], sep='  ')
+        # Reverse the board to easily printting it with the white view
+        rev_board = [self.board[::-1][i:i+8][::-1] for i in range (0, 64, 8)]
+   
+        # Print algorithm
+        print('    ' + '_' * 8 * 4)
+        for k, v in enumerate(rev_board):
+            print(8 - k , end='  ')
+            print('|', end=' ')
+            print(
+                *[x.piece.annotation if x.piece else ' ' for x in v], 
+                sep=' | ',
+                end='')
+            print(' |')
+            print('    ' + '_' * 8 * 4)
+        print( '    ', end=' ')
+        print(*[chr(x) for x in range(65, 73)], sep='   ')
 
         
         
