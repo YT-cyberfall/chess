@@ -36,5 +36,5 @@ class Case:
         self.x = num % 8
         self.y = num // 8
         assert 0 <= max(self.x, self.y) < 8
-        self.color = ('white', 'black')[self.x % 2 == self.y % 2]
+        self.color = 'black' if self.x % 2 == self.y % 2 else 'white'
         self.piece = pieces_positions.get((self.x, self.y))

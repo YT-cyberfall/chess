@@ -4,9 +4,9 @@
 import board
 
 b = board.Board()
-for c in b.board:
-    print(f'{chr(65 + c.x)} {c.y} - {c.color} : {c.piece}')
+b.pprint()
     
 # TODO replaced by a pprint
 # TODO write tests
-
+# TODO replace assert by exception custom management
+# TODO implement the Piece class

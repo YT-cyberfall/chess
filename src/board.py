@@ -38,5 +38,21 @@ class Board:
                 'white': [],
                 'black': []
             }
+    
+    
+    def pprint(self): 
+        '''This method print the board in the console''' 
         
-    # TODO a prettyprint
+        # TODO remplacer par Piece
+        print('   ' + '_' * 8 * 3)
+        for i in range(0, 64, 8):
+            print((i // 8) + 1, end='  ')
+            print('|', end='')
+            print(*[x.piece for x in self.board[i:i+8]], sep='|', end='')
+            print('|')
+            print('   ' + '_' * 8 * 3)
+        print( '   ', end=' ')
+        print(*[chr(x) for x in range(65, 73)], sep='  ')
+
+        
+        
