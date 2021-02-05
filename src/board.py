@@ -59,6 +59,16 @@ class Board:
             print('    ' + '_' * 8 * 4)
         print( '    ', end=' ')
         print(*[chr(x) for x in range(65, 73)], sep='   ')
+        
+    # TODO
+    def play_a_move(self, origin, destination):
+        '''Move the piece at origin to destination. The move is made only if the
+        square is empty or took by opponent.
+        Basically, origin always become : case.piece = None, and destination 
+        always become : case.piece = origin piece.
+        This function also feed the graveyard if necessary
+        '''
+        pass
 
         
         
