@@ -7,3 +7,13 @@ class Piece:
     def __init__(self, team):
         self.team = team
         
+    def __str__(self):
+        ''' Overloading function of print.
+        It returns the current instance as : 
+        attr1 => value
+        attr2 => value
+        ....
+        '''
+        return '\n'.join([f'{a} => {getattr(self, a)} ' for a in dir(self) \
+            if not a.startswith('__')])
+        

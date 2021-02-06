@@ -3,7 +3,6 @@
 
 import case
 
-
 class Board:
     ''' This class represents the board of the chess game.
     This class is the only listener in our program.
@@ -29,7 +28,6 @@ class Board:
         Parameters
         ----------
         '''
-        
         # the pieces_position.config object's got the initial position
         with open('datas/pieces_position.config', 'r') as f:
             pieces_positions = eval(f.read())
@@ -68,7 +66,11 @@ class Board:
         always become : case.piece = origin piece.
         This function also feed the graveyard if necessary
         '''
-        pass
+        import pprint
+        case_origin = self.board[origin[0] + origin[1] * 8]
+        case_destination = self.board[destination[0] + destination[1] * 8]
+        print(case_origin)
+        print(case_destination)
 
         
         

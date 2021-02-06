@@ -10,3 +10,5 @@ class Pawn(piece.Piece):
         super().__init__(team)
         self.name = 'Pawn'
         self.annotation = 'P'
+        
+    

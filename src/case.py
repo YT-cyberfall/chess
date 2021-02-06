@@ -38,3 +38,13 @@ class Case:
         self.color = 'black' if self.x % 2 == self.y % 2 else 'white'
         piece_name = pieces_positions.get((self.x, self.y))
         self.piece = eval(f'{piece_name[0].lower()}.{piece_name[0]}("{piece_name[1]}")') if piece_name else None
+        
+    def __str__(self):
+        ''' Overloading function of print.
+        It returns the current instance as : 
+        attr1 => value
+        attr2 => value
+        ....
+        '''
+        return '\n'.join([f'{a} => {getattr(self, a)} ' for a in dir(self) \
+            if not a.startswith('__')])

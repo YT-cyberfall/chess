@@ -8,6 +8,8 @@ import board
 b = board.Board()
 b.pprint()
 
+b.play_a_move((0,1), (4,1))
+
 # TODO board.play_a_move who basically moves a pieces for start to end if the 
 # dest square is empty or opposite
 # TODO PEP8fy
