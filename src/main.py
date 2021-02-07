@@ -8,12 +8,11 @@ import board
 b = board.Board()
 b.pprint()
 
-b.play_a_move((0,1), (4,1))
+b.play_a_move((1,0), (6,6))
+b.pprint()
 
-# TODO board.play_a_move who basically moves a pieces for start to end if the 
-# dest square is empty or opposite
 # TODO PEP8fy
-# TODO test case for pieces 
-# TODO continue de dev
+# TODO defining step to go throught
+# For each step trying to define fucntions, and then write test
 # TODO add a requirement.txt
 

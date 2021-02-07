@@ -66,11 +66,38 @@ class Board:
         always become : case.piece = origin piece.
         This function also feed the graveyard if necessary
         '''
-        import pprint
-        case_origin = self.board[origin[0] + origin[1] * 8]
-        case_destination = self.board[destination[0] + destination[1] * 8]
-        print(case_origin)
-        print(case_destination)
+        try:
+           
+            if (origin == destination):
+                    raise ValueError('Move options are illegal -> identical position')
+            for coord in  origin + destination:
+                if not (0 <= coord < 8):
+                    raise ValueError('Move options are illegal -> Out of the board')
+                
+                
+                    
+            case_origin = self.board[origin[0] + origin[1] * 8]
+            case_destination = self.board[destination[0] + destination[1] * 8]
+            if not case_origin.piece:
+                raise ValueError('Move options are illegal -> origin doesnt have piece on it')
+            if (case_destination.piece and case_origin.piece.team == case_destination.piece.team):
+                raise ValueError('Move options are illegal -> destination took y allies')
+            
+                
+            
+            if case_destination.piece:
+                self.graveyard[case_destination.piece.team].\
+                    append(case_destination.piece)
+            case_destination.piece = case_origin.piece
+            case_origin.piece = None   
+        except AssertionError as e:
+            print(e)
+        finally:
+            pass
+            
+        
+         
+                
 
         
         

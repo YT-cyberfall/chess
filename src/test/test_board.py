@@ -27,22 +27,23 @@ class TestBoard(unittest.TestCase):
         '''Test the board state after moving a piece capturing another'''
         
         # Ra1-d4 - Rd4xg7
-        self.board.play_a_move((0,0), (3,3))
-        self.board.play_a_move((3,3), (6,6))
+        self.board.play_a_move((0,0), (3,3)) 
+        self.board.play_a_move((3,3), (6,6)) 
         self.assertEqual(self.board.board[0].piece, None)
         self.assertEqual(self.board.board[54].piece.team, 'white')
         self.assertEqual(self.board.board[54].piece.name, 'Rook')
         self.assertEqual(len(self.board.graveyard.get('black')), 1)
-        self.assertEqual(len(self.board.graveyard.get('white')), 1)
+        self.assertEqual(len(self.board.graveyard.get('white')), 0)
         
     def test_play_a_move_exc(self):
         '''Test the exceptions with bad values gave to the function as :
-        out of board, on same color moving, on same square'''
-        
+        out of board, on same color moving, on same square, moving a None square
+        '''
         self.assertRaises(ValueError, lambda : self.board.play_a_move((7,0), (8,6)))
         self.assertRaises(ValueError, lambda : self.board.play_a_move((-1,0), (1,6)))
         self.assertRaises(ValueError, lambda : self.board.play_a_move((1,0), (1,0)))
         self.assertRaises(ValueError, lambda : self.board.play_a_move((1,0), (2,0)))
+        self.assertRaises(ValueError, lambda : self.board.play_a_move((4,3), (2,0)))
         
 if __name__ == '__main__':
     unittest.main()
