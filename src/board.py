@@ -70,8 +70,14 @@ class Board:
         
         
     def get_case_from_coord(self, x, y):
-        # TODO faire le test
-        pass
+        
+        try:
+             if (x not in range(8)) or (y not in range(8)):
+                 raise ValueError('Coordinates are illegal -> out of the board')
+             return self.board[y * 8 + x]
+        except AssertionError as e:
+            print(e)
+            
         
     def play_a_move(self, origin, destination):
         '''Move the piece at origin to destination. The move is made only if the
