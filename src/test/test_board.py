@@ -68,5 +68,19 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(self.board.get_move_for_square(2, 3), sorted([[1,1], [2,1], [3,1], [1,2], [1,3], [2,3], [3,3], [3,2]]))
         
         
+    def test_get_case_from_coords(self):
+        case0 = self.board.board[0]
+        case1 = self.board.board[5]
+        case1 = self.board.board[28]
+        case2 = self.board.board[63]
+        case3 = self.board.board[69]
+        case3 = self.board.board[-3]
+        self.assertEqual(self.board.get_case_from_coord(0,0), case0)
+        self.assertEqual(self.board.get_case_from_coord(5,0), case1)
+        self.assertEqual(self.board.get_case_from_coord(4,3), case2)
+        self.assertEqual(self.board.get_case_from_coord(7,7), case4)
+        self.assertRaises(ValueError, lambda : self.board.get_case_from_coord(8,7))
+        self.assertRaises(ValueError, lambda : self.board.get_case_from_coord(-1,7))
+        
 if __name__ == '__main__':
     unittest.main()

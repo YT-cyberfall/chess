@@ -66,8 +66,12 @@ class Board:
         
     def get_move_for_square(self, x, y):
         '''Get the possible move list for a sqaure(x, y)'''
-        pass
+        case = self.get_case_from_coord(x,y)
         
+        
+    def get_case_from_coord(self, x, y):
+        # TODO faire le test
+        pass
         
     def play_a_move(self, origin, destination):
         '''Move the piece at origin to destination. The move is made only if the
