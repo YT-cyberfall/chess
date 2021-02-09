@@ -6,11 +6,9 @@ import board
 
 
 b = board.Board()
-b.pprint()
-
-b.play_a_move((1,0), (6,6))
-b.pprint()
-
+b.play_a_move((0,0),(3,5))
+v = b.get_move_for_square(3,5)
+print(v)
 # TODO PEP8fy
 # For each step trying to define fucntions, and then write test
 # TODO add a requirement.txt

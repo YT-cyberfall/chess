@@ -67,6 +67,8 @@ class Board:
     def get_move_for_square(self, x, y):
         '''Get the possible move list for a sqaure(x, y)'''
         case = self.get_case_from_coord(x,y)
+        return case.piece.get_all_moves(x,y, self)
+        
         
         
     def get_case_from_coord(self, x, y):
