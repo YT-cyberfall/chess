@@ -10,3 +10,6 @@ class Rook(piece.Piece):
         super().__init__(team)
         self.name = 'Rook'
         self.annotation = 'R'
+    
+
+        

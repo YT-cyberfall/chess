@@ -28,10 +28,15 @@ class Board:
         Parameters
         ----------
         '''
-        # the pieces_position.config object's got the initial position
+        
+        # The pieces_position.config object's got the initial position
         with open('datas/pieces_position.config', 'r') as f:
             pieces_positions = eval(f.read())
+            
+        # creating the Cases structs for each square
         self.board = [case.Case(i, pieces_positions) for i in range(64)]
+        
+        # At the begining of the game, the graveyard is empty
         self.graveyard = {
             'white': [],
             'black': []
@@ -58,42 +63,60 @@ class Board:
         print( '    ', end=' ')
         print(*[chr(x) for x in range(65, 73)], sep='   ')
         
-    # TODO
+        
+    def get_move_for_square(self, x, y):
+        '''Get the possible move list for a sqaure(x, y)'''
+        pass
+        
+        
     def play_a_move(self, origin, destination):
         '''Move the piece at origin to destination. The move is made only if the
         square is empty or took by opponent.
         Basically, origin always become : case.piece = None, and destination 
         always become : case.piece = origin piece.
-        This function also feed the graveyard if necessary
+        This function also feed the graveyard if necessary.
         '''
+        
         try:
            
-            if (origin == destination):
-                    raise ValueError('Move options are illegal -> identical position')
-            for coord in  origin + destination:
-                if not (0 <= coord < 8):
-                    raise ValueError('Move options are illegal -> Out of the board')
+           # The first part is about testing args coherence
+           
+           # A move can not be from (x, y) to (x, y)
+            if origin == destination:
+                raise ValueError('Move options are illegal -> '
+                                     'identical position')
+            
+            # All moves coordinates should be in range(8)
+            if False in [0 <= coord < 8 for coord in origin + destination]:
+                raise ValueError('Move options are illegal -> '
+                                     'Out of the board')
                 
-                
-                    
+            # Getting associated Case struct for args, for easier operations
             case_origin = self.board[origin[0] + origin[1] * 8]
             case_destination = self.board[destination[0] + destination[1] * 8]
-            if not case_origin.piece:
-                raise ValueError('Move options are illegal -> origin doesnt have piece on it')
-            if (case_destination.piece and case_origin.piece.team == case_destination.piece.team):
-                raise ValueError('Move options are illegal -> destination took y allies')
             
+            # The move is made by a Piece, so the origin case can not be empty
+            if case_origin.piece is None:
+                raise ValueError('Move options are illegal -> '
+                                 'origin doesnt have piece on it')
                 
+            # A piece can not move onto a square took by an allies
+            if case_destination.piece is not None and \
+                case_origin.piece.team == case_destination.piece.team:
+                raise ValueError('Move options are illegal -> '
+                                 'destination took y allies')
             
+            # If there's a piece on the destination square, this piece is dead
             if case_destination.piece:
                 self.graveyard[case_destination.piece.team].\
                     append(case_destination.piece)
+                    
+            # Final assignements of the move
             case_destination.piece = case_origin.piece
             case_origin.piece = None   
+            
         except AssertionError as e:
             print(e)
-        finally:
-            pass
             
         
          

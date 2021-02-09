@@ -32,12 +32,13 @@ class Case:
             the initial chess board position 
         ----------
         '''
+        
         # Attribute assignement
         self.x = num % 8
         self.y = num // 8
         self.color = 'black' if self.x % 2 == self.y % 2 else 'white'
         piece_name = pieces_positions.get((self.x, self.y))
-        self.piece = eval(f'{piece_name[0].lower()}.{piece_name[0]}("{piece_name[1]}")') if piece_name else None
+        self.piece = eval(f'{piece_name[0].lower()}.{piece_name[0]}("{piece_name[1]}")') if piece_name is not None else None
         
     def __str__(self):
         ''' Overloading function of print.
