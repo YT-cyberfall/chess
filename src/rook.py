@@ -5,82 +5,73 @@ import piece
 
 
 class Rook(piece.Piece):
+    '''Representing a rook piece
+    
+        Attributes :
+        team : str : The team of the piece (white or black)
+        name : str : The english name of the piece
+        annotation : char : The piece letter for writting moves
+        first_move : bool : Whether the piece has move or not
+        
+        Methods :
+        __init__ : Create a rook piece from Piece object
+        get_all_moves : Returns all the possible moves by the Rook 
+    '''
+    
     
     def __init__(self, team):
+        '''Create a rook piece from Piece object
+        
+        Arguments : 
+        team : str : wether the piece is white or black
+        '''
+        
         super().__init__(team)
         self.name = 'Rook'
         self.annotation = 'R'
-    
+        self.first_move = True
+            
     
     def get_all_moves(self, x, y, board):
-        '''return all the moves possible on an empty board'''
+        '''Returns all the possible moves by the Rook
+        
+        Arguments : 
+        x : integer : the x position of the rook on the board 
+        y : integer : the y position of the rook on the board 
+        board : Board : the current board to play the move 
+        
+        Returns : list : containing all moves as [x_destination, y_destination]
+        '''
+        
         res = []
-        eat = False
         
-        
-        
-        # for x_2 in [i for i in range(8)]:
-            # for y_2 in [i for i in range(8)]:
-                # print(x_2, y_2)
-                # if (x_2 != x or y_2 != y) and (y_2 == y or x_2==x) :
-                    # print('\t' , x_2, y_2)
-                    # 
-                    # if board.get_case_from_coord(x_2, y_2).piece is None:
-                        # res.append([x_2, y_2])
-                    # elif board.get_case_from_coord(x_2, y_2).piece.team != self.team and eat == False:
-                        # res.append([x_2, y_2])    
-                    # else:
-                        # break
-                    # 
-                    
-                    
-            #l'idée et de parcourir de droite a gauche, en faisnt les 4 cpte"
-            #gauche
-        for x2 in range(x):
-            if board.get_case_from_coord(x2, y).piece is None:
+        # The vertical possibilities
+        for x_direction in [range(x)[::-1], range(x + 1, 8)]:
+            for x2 in x_direction:
+                
+                # The piece onto the case to go to (None if any)
+                piece_on_dest = board.get_case_from_coord(x2, y).piece
+                if piece_on_dest is None:
                     res.append([x2, y])
-            elif board.get_case_from_coord(x2, y).piece.team != self.team and eat == False:
-                    res.append([x2, y]) 
-                    eat = True
-            else:
-                break
-        eat = False
-        #droite
-        for x2 in range(x+1, 8):
-            
-            if board.get_case_from_coord(x2, y).piece is None:
+                elif piece_on_dest.team != self.team:
                     res.append([x2, y])
-            elif board.get_case_from_coord(x2, y).piece.team != self.team and eat == False:
-                    res.append([x2, y]) 
-                    eat = True
-            else:
-                break
-        eat = False
-        
-        #haut
-        for y2 in range(y)[::-1]:
-            print(y2)
-            
-            if board.get_case_from_coord(x, y2).piece is None:
+                    break
+                else:
+                    break
+                
+        # The horizontal possibilities
+        for y_direction in [range(y)[::-1], range(y + 1, 8)]:
+            for y2 in y_direction:
+                
+                # The piece onto the case to go to (None if any)
+                piece_on_dest = board.get_case_from_coord(x, y2).piece
+                if piece_on_dest is None:
                     res.append([x, y2])
-            elif board.get_case_from_coord(x, y2).piece.team != self.team and eat == False:
-                    res.append([x, y2]) 
-                    eat = True
-            else:
-                eat = False
-                break
-        #base
-        eat = False
-        
-        for y2 in range(y+1, 8):
-            if board.get_case_from_coord(x, y2).piece is None:
-                res.append([x, y2])
-            elif board.get_case_from_coord(x, y2).piece.team != self.team and eat == False:
-                    res.append([x, y2]) 
-                    eat = True
-            else:
-                eat = False
-                break
+                elif piece_on_dest.team != self.team:
+                    res.append([x, y2])
+                    break
+                else:
+                    break
 
         return sorted(res)
         

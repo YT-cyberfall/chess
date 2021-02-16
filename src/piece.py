@@ -8,8 +8,8 @@ class Piece:
         self.team = team
         
     def __str__(self):
-        ''' Overloading function of print.
-        It returns the current instance as : 
+        ''' Overloading print function
+        Returns the current instance as : 
         attr1 => value
         attr2 => value
         ....

@@ -6,10 +6,14 @@ import board
 
 
 b = board.Board()
-b.play_a_move((0,0),(3,5))
-v = b.get_move_for_square(3,5)
-print(v)
-# TODO PEP8fy
-# For each step trying to define fucntions, and then write test
-# TODO add a requirement.txt
+b.play_a_move((0,0), (3,5))
+b.play_a_move((1,0), (4,5))
+
+b.play_a_move((2,7), (5,2))
+b.play_a_move((3,0), (7,5))
+b.play_a_move((7,1), (0,5))
+
+v = b.get_move_for_square(0,3)
+print(b.history)
+
 

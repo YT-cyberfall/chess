@@ -9,45 +9,56 @@ class Board:
     As we never touche other sub classes (pieces...), this on is the interface
     bewtween us and these sub classes.
 
-    Attributes
-    ----------
-    board : list of Case object
-        the main board 
-    graveyard : dict
-        the place where took pieces go
-
-    Methods
-    -------
+    Attributes :
+    board : list of Case : the main board 
+    graveyard : dict : the place where took pieces go
+    
+    Methods :
+    __init__ : Constructs and initialize all the necessary attributes for the 
+    board object.
+    pprint : Prints the board in the console
+    get_move_for_square : 
+    get_case_from_coord :
+    play_a_move : 
+    move_to_note : 
     '''
     
     def __init__(self):
         '''
         Constructs and initialize all the necessary attributes for the board 
         object.
-        
-        Parameters
-        ----------
         '''
         
-        # The pieces_position.config object's got the initial position
-        with open('datas/pieces_position.config', 'r') as f:
-            pieces_positions = eval(f.read())
+        try :
             
-        # creating the Cases structs for each square
-        self.board = [case.Case(i, pieces_positions) for i in range(64)]
-        
-        # At the begining of the game, the graveyard is empty
-        self.graveyard = {
-            'white': [],
-            'black': []
-        }
+            # The pieces_position.config object's got the initial position
+            with open('datas/pieces_position.config', 'r') as f:
+                pieces_positions = eval(f.read())
+                
+            # Creating the Cases structs for each square
+            self.board = [case.Case(i, pieces_positions) for i in range(64)]
+            
+            # At the begining of the game, the graveyard is empty
+            self.graveyard = {
+                'white': [],
+                'black': []
+            }
+            
+            # The history of the game
+            self.history = []
+            
+            # The number of the current move
+            self.move_num = 1
+
+        except EnvironmentError:
+            print('Unable to open the config position file')
     
     
     def pprint(self): 
-        '''This method print the board in the console''' 
+        '''Prints the board in the console''' 
         
-        # Reverse the board to easily printting it with the white view
-        rev_board = [self.board[::-1][i:i+8][::-1] for i in range (0, 64, 8)]
+        # Reverse the board to easily printing it with the white view
+        rev_board = [self.board[::-1][i:i + 8][::-1] for i in range (0, 64, 8)]
    
         # Print algorithm
         print('    ' + '_' * 8 * 4)
@@ -65,18 +76,33 @@ class Board:
         
         
     def get_move_for_square(self, x, y):
-        '''Get the possible move list for a sqaure(x, y)'''
-        case = self.get_case_from_coord(x,y)
-        return case.piece.get_all_moves(x,y, self)
+        '''Get the possible move list for the piece located at (x, y)
         
+        Attributes :
+        x : int : The x coordinate of the square
+        y : int : The y coordinate of the square
+        '''
+        
+        piece = self.get_case_from_coord(x, y).piece
+        return piece.get_all_moves(x, y, self) if piece else []
         
         
     def get_case_from_coord(self, x, y):
+        '''Get the square located on the (x, y) position
+        
+        Attributes :
+        x : int : The x coordinate of the square
+        y : int : The y coordinate of the square
+        '''
         
         try:
-             if (x not in range(8)) or (y not in range(8)):
-                 raise ValueError('Coordinates are illegal -> out of the board')
+            
+            # The coordinates have to be outo the board
+             if any(v not in range(8) for v in (x, y)):
+                 raise ValueError('Illegal coordinates -> out of the board')
+             
              return self.board[y * 8 + x]
+         
         except AssertionError as e:
             print(e)
             
@@ -87,6 +113,10 @@ class Board:
         Basically, origin always become : case.piece = None, and destination 
         always become : case.piece = origin piece.
         This function also feed the graveyard if necessary.
+        
+        Attributes :
+        origin : tuple of int : The coordinate of the origin square as (x, y)
+        destination : tuple of int : The coordinate of the dest square as (x, y)
         '''
         
         try:
@@ -99,10 +129,19 @@ class Board:
                                      'identical position')
             
             # All moves coordinates should be in range(8)
-            if False in [0 <= coord < 8 for coord in origin + destination]:
+            if not all([coord in range(8) for coord in origin + destination]):
                 raise ValueError('Move options are illegal -> '
                                      'Out of the board')
                 
+            # Updating the move number if it already has been writen 2 times
+            # This is needed for the history
+            if len([move for move in self.history if \
+                move.startswith(str(self.move_num))]) == 2:
+                   self.move_num += 1
+            
+            # The move is write out inside the history
+            self.history.append(self.move_to_note(origin, destination))
+            
             # Getting associated Case struct for args, for easier operations
             case_origin = self.board[origin[0] + origin[1] * 8]
             case_destination = self.board[destination[0] + destination[1] * 8]
@@ -120,15 +159,40 @@ class Board:
             
             # If there's a piece on the destination square, this piece is dead
             if case_destination.piece:
-                self.graveyard[case_destination.piece.team].\
-                    append(case_destination.piece)
-                    
+                self.send_to_grave(case_destination)
+                
             # Final assignements of the move
             case_destination.piece = case_origin.piece
             case_origin.piece = None   
             
+            # A pawn only can move forward by two square when it's his first
+            # move
+            if case_destination.piece.name == 'Pawn':
+                case_destination.piece.first_move = False
+            
         except AssertionError as e:
             print(e)
+            
+    
+    #TODO 
+    def move_to_note(self, origin, destination):
+        '''This function takes a move and write it as chess formatted
+        NxB5 etc
+        
+        Arguments :
+        origin : tuple of int : The coordinate of the origin square as (x, y)
+        destination : tuple of int : The coordinate of the dest square as (x, y)
+        '''
+        return f'{self.move_num}. {origin}{destination}'
+    
+    
+    def send_to_grave(self, case):
+        '''This function put the piece on case in the gravyard
+        
+        Arguments :
+        case : Case : the case on which there's the piece to kill
+        '''
+        self.graveyard[case.piece.team].append(case.piece)
             
         
          
