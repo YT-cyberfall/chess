@@ -88,6 +88,11 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(self.board.get_move_for_square(2, 2), sorted([
             [1,1], [2,1], [3,1], [1,2], [1,3], [2,3], [3,3], [3,2]]))
         
+        #En passant possibilities # c7c4 b4 
+        self.board.play_a_move((2,6), (2,3)) 
+        self.board.play_a_move((1,1), (1,3))
+        self.assertEqual(self.board.get_move_for_square(2, 3), sorted([[1,2]]))
+        
         
     def test_get_case_from_coords(self):
         '''Test if the selection of a sqaure by its cooridnate is correct'''
@@ -106,6 +111,18 @@ class TestBoard(unittest.TestCase):
                           lambda : self.board.get_case_from_coord(8,7))
         self.assertRaises(ValueError, 
                           lambda : self.board.get_case_from_coord(-1,7))
+        
+        
+    def test_get_last_name(self):
+        '''Test if the last move write in the ihistory is correct'''
+        self.assertEqual(self.board._get_last_move(), None)
+        self.board.play_a_move((1,1), (1,2))
+        self.board.play_a_move((4,7), (2,2))
+        self.assertEqual(self.board._get_last_move(), ' (4, 7)(2, 2)')
+        self.board.play_a_move((2,7), (5,2))
+        self.assertEqual(self.board._get_last_move(display_move_num=True),
+                          '2. (2, 7)(5, 2)')
+        
         
         
 if __name__ == '__main__':

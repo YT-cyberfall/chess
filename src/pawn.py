@@ -31,7 +31,6 @@ class Pawn(piece.Piece):
         self.first_move = True
         
         
-    # TODO en passant and promotion
     def get_all_moves(self, x, y, board):
         '''Returns all the possible moves by the Pawn
         
@@ -71,7 +70,20 @@ class Pawn(piece.Piece):
                 piece_on_des = board.get_case_from_coord(val, m1).piece
                 if piece_on_des is not None and piece_on_des.team != self.team:
                     res.append([val, m1])
-                
+                    
+        # Check the en passant possibilities 
+        last_move = board._get_last_move()
+        x_var = set((x - 1, x + 1)).intersection(range(8))
+        
+        # Get all the moves that would allow an en-passant took
+        possible_en_passant = [f' ({x2}, {m2})({x2}, {y})' for x2 in x_var]
+        
+        # If the last move is in the en passant possibilities, then append it
+        if last_move in possible_en_passant:
+            a = int(last_move[-5])
+            b = int(last_move[-2]) + (1 if self.team == 'white' else -1)
+            res.append([a, b])
+            
         return sorted(res)
             
     

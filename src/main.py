@@ -6,14 +6,15 @@ import board
 
 
 b = board.Board()
-b.play_a_move((0,0), (3,5))
-b.play_a_move((1,0), (4,5))
+print(b.pprint())
 
-b.play_a_move((2,7), (5,2))
-b.play_a_move((3,0), (7,5))
-b.play_a_move((7,1), (0,5))
+b.play_a_move((1,1), (1,4))
+print(b.pprint())
 
-v = b.get_move_for_square(0,3)
-print(b.history)
+b.play_a_move((0,6), (0,4))
+c = b.get_case_from_coord(1, 4) # 1,4 - 0-5, 2-5
+print(b.pprint())
+
+c.piece.get_all_moves(1, 4, b)
 
 

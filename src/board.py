@@ -193,6 +193,16 @@ class Board:
         case : Case : the case on which there's the piece to kill
         '''
         self.graveyard[case.piece.team].append(case.piece)
+        
+    def _get_last_move(self, display_move_num=False):
+        '''Returns the last move played
+        
+        Arguments :
+        display_move_num : bool : if we display the move number or not
+        '''
+        last_move = None if len(self.history) == 0 else self.history[-1]
+        return last_move if display_move_num or last_move is None else \
+            last_move.split('.')[1] 
             
         
          
